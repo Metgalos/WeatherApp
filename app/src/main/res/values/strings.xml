@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enterCity">Введите город: </string>
+    <string name="moscow">Москва</string>
+    <string name="getWeather">Узнать погоду</string>
+    <string name="temperature">Температура: </string>
+    <string name="temperature_feels">Ощущается: </string>
+    <string name="weatherIconDescription">Иконка погоды</string>
+</resources>
