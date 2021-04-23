@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.repository.Repository
 
@@ -27,6 +28,7 @@ class WeatherFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(WeatherViewModel::class.java)
 
         viewModel.myResponse.observe(this, Observer {
+            Glide.with(this).load(it.current?.icons?.first()).into(binding.weatherIconImageView)
             binding.weather = it
         })
 
