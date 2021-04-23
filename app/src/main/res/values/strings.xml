@@ -8,4 +8,5 @@
     <string name="temperature">Температура: </string>
     <string name="temperature_feels">Ощущается: </string>
     <string name="weatherIconDescription">Иконка погоды</string>
+    <string name="history">История</string>
 </resources>
