@@ -6,10 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.models.Weather
 import com.example.weatherapp.repository.Repository
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class WeatherViewModel(private val repository: Repository): ViewModel() {
 
-    val myResponse: MutableLiveData<Weather> = MutableLiveData()
+    val myResponse: MutableLiveData<Response<Weather>> = MutableLiveData()
 
     fun getCurrentWeather(city: String) {
         viewModelScope.launch {
