@@ -11,13 +11,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.weatherapp.data.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.repository.Repository
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
-    private lateinit var viewModel: WeatherViewModel
+    private lateinit var apiViewModel: WeatherApiViewModel
+    private lateinit var dbViewModel: WeatherDatabaseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,12 +29,14 @@ class WeatherFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
 
+        dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
+
         val repository = Repository()
         val viewModelFactory = WeatherViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(WeatherViewModel::class.java)
+        apiViewModel = ViewModelProvider(this, viewModelFactory).get(WeatherApiViewModel::class.java)
         observeGetCurrentWeather()
 
-        viewModel.getCurrentWeather(DEFAULT_CITY)
+        apiViewModel.getCurrentWeather(DEFAULT_CITY)
 
         getCurrentWeatherButtonListeners()
 
@@ -38,11 +44,12 @@ class WeatherFragment : Fragment() {
     }
 
     private fun observeGetCurrentWeather() {
-        viewModel.myResponse.observe(this, Observer { response ->
+        apiViewModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
 
             if (response.isSuccessful) {
                 Glide.with(this).load(response.body()?.current?.icons?.first()).into(binding.weatherIconImageView)
                 binding.weather = response.body()
+                insertWeatherHistory()
             } else {
                 Log.d("Response", response.errorBody().toString())
                 Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
@@ -50,13 +57,32 @@ class WeatherFragment : Fragment() {
         })
     }
 
+    private fun insertWeatherHistory() {
+        val weatherBinding = binding.weather
+
+        val weather = Weather(
+            weatherBinding?.location?.name,
+            weatherBinding?.current?.temperature,
+            weatherBinding?.current?.feelslike,
+            weatherBinding?.current?.icons?.first().toString(),
+            getCurrentDateTime())
+
+        dbViewModel.add(weather)
+    }
+
+    private fun getCurrentDateTime(): String {
+        val format = SimpleDateFormat(DATE_FORMAT, Locale.US)
+        return format.format(Date())
+    }
+
     private fun getCurrentWeatherButtonListeners() {
         binding.getCurrentWeatherButton.setOnClickListener {
-            viewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
+            apiViewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
         }
     }
 
     companion object {
         private const val DEFAULT_CITY = "Moscow"
+        private const val DATE_FORMAT = "yyyy/MM/dd HH:mm"
     }
 }

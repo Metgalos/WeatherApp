@@ -9,6 +9,6 @@ class WeatherViewModelFactory(
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return WeatherViewModel(repository) as T
+        return WeatherApiViewModel(repository) as T
     }
 }
