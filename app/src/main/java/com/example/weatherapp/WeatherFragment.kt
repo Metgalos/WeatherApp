@@ -28,7 +28,16 @@ class WeatherFragment : Fragment() {
         val repository = Repository()
         val viewModelFactory = WeatherViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(WeatherViewModel::class.java)
+        observeGetCurrentWeather()
 
+        viewModel.getCurrentWeather(DEFAULT_CITY)
+
+        getCurrentWeatherButtonListeners()
+
+        return binding.root
+    }
+
+    private fun observeGetCurrentWeather() {
         viewModel.myResponse.observe(this, Observer { response ->
 
             if (response.isSuccessful) {
@@ -39,14 +48,12 @@ class WeatherFragment : Fragment() {
                 Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
             }
         })
+    }
 
-        viewModel.getCurrentWeather(DEFAULT_CITY)
-
+    private fun getCurrentWeatherButtonListeners() {
         binding.getCurrentWeatherButton.setOnClickListener {
             viewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
         }
-
-        return binding.root
     }
 
     companion object {
