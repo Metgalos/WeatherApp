@@ -8,7 +8,7 @@
     <data>
         <variable
             name="weather"
-            type="com.example.weatherapp.models.Weather" />
+            type="com.example.weatherapp.weatherapi.models.Weather" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

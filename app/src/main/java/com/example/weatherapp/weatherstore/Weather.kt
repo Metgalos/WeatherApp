@@ -1,4 +1,4 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.weatherstore
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

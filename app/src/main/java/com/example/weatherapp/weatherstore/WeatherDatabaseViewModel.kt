@@ -1,12 +1,9 @@
-package com.example.weatherapp
+package com.example.weatherapp.weatherstore
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.Weather
-import com.example.weatherapp.data.WeatherDatabase
-import com.example.weatherapp.data.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,7 +14,10 @@ class WeatherDatabaseViewModel(application: Application): AndroidViewModel(appli
 
     init {
         val weatherDao = WeatherDatabase.getDatabase(application).weatherDao()
-        repository = WeatherRepository(weatherDao)
+        repository =
+            WeatherRepository(
+                weatherDao
+            )
         getAll = repository.getAll
     }
 

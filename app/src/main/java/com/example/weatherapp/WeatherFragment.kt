@@ -10,9 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.weatherapp.data.Weather
+import com.example.weatherapp.weatherstore.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
-import com.example.weatherapp.repository.Repository
+import com.example.weatherapp.weatherapi.WeatherApiViewModel
+import com.example.weatherapp.weatherapi.WeatherService
+import com.example.weatherapp.weatherapi.WeatherViewModelFactory
+import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,8 +38,9 @@ class WeatherFragment : Fragment() {
 
         dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
 
-        val repository = Repository()
-        val viewModelFactory = WeatherViewModelFactory(repository)
+        val repository = WeatherService()
+        val viewModelFactory =
+            WeatherViewModelFactory(repository)
         apiViewModel = ViewModelProvider(this, viewModelFactory).get(WeatherApiViewModel::class.java)
         observeGetCurrentWeather()
 
@@ -69,7 +73,8 @@ class WeatherFragment : Fragment() {
             weatherBinding?.current?.temperature,
             weatherBinding?.current?.feelslike,
             weatherBinding?.current?.icons?.first().toString(),
-            getCurrentDateTime())
+            getCurrentDateTime()
+        )
 
         dbViewModel.add(weather)
     }

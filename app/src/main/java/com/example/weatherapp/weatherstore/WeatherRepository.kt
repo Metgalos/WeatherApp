@@ -1,6 +1,8 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.weatherstore
 
 import androidx.lifecycle.LiveData
+import com.example.weatherapp.weatherstore.Weather
+import com.example.weatherapp.weatherstore.WeatherDao
 
 class WeatherRepository(private val weatherDao: WeatherDao) {
 

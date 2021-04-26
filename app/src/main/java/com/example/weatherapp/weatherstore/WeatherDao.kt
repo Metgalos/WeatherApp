@@ -1,7 +1,8 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.weatherstore
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.weatherapp.weatherstore.Weather
 
 @Dao
 interface WeatherDao {

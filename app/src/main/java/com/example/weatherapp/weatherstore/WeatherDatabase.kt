@@ -1,4 +1,4 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.weatherstore
 
 import android.content.Context
 import androidx.room.Database
@@ -15,7 +15,8 @@ abstract class WeatherDatabase: RoomDatabase() {
         private var instance: WeatherDatabase? = null
 
         fun getDatabase(context: Context): WeatherDatabase {
-            val instance = instance
+            val instance =
+                instance
 
             if (instance != null) {
                 return instance
@@ -28,7 +29,7 @@ abstract class WeatherDatabase: RoomDatabase() {
                     "weather_database"
                 ).build()
 
-                this.instance = newInstance
+                Companion.instance = newInstance
 
                 return newInstance
             }

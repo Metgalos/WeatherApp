@@ -1,14 +1,15 @@
-package com.example.weatherapp
+package com.example.weatherapp.weatherapi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.weatherapp.repository.Repository
 
 class WeatherViewModelFactory(
-    private val repository: Repository
+    private val weatherService: WeatherService
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return WeatherApiViewModel(repository) as T
+        return WeatherApiViewModel(
+            weatherService
+        ) as T
     }
 }
