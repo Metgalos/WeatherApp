@@ -1,19 +1,24 @@
-package com.example.weatherapp.weatherstore
+package com.example.weatherapp.weatherstore.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.weatherapp.weatherstore.Weather
+import com.example.weatherapp.weatherstore.WeatherDatabase
+import com.example.weatherapp.weatherstore.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WeatherDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
-    private val getAll: LiveData<List<Weather>>
+    val getAll: LiveData<List<Weather>>
     private val repository: WeatherRepository
 
     init {
-        val weatherDao = WeatherDatabase.getDatabase(application).weatherDao()
+        val weatherDao = WeatherDatabase.getDatabase(
+            application
+        ).weatherDao()
         repository =
             WeatherRepository(
                 weatherDao

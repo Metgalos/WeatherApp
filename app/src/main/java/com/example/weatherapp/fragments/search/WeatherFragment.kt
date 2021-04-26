@@ -1,4 +1,4 @@
-package com.example.weatherapp
+package com.example.weatherapp.fragments.search
 
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.weatherapp.R
 import com.example.weatherapp.weatherstore.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
-import com.example.weatherapp.weatherapi.WeatherApiViewModel
+import com.example.weatherapp.weatherapi.viewmodel.WeatherApiViewModel
 import com.example.weatherapp.weatherapi.WeatherService
-import com.example.weatherapp.weatherapi.WeatherViewModelFactory
-import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
+import com.example.weatherapp.weatherapi.viewmodel.WeatherViewModelFactory
+import com.example.weatherapp.infrastructure.DateFormat
+import com.example.weatherapp.infrastructure.image.GlideImageLoader
+import com.example.weatherapp.infrastructure.image.LoadPhotoConfig
+import com.example.weatherapp.weatherstore.viewmodel.WeatherDatabaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +31,6 @@ class WeatherFragment : Fragment() {
 
     companion object {
         private const val DEFAULT_CITY = "Moscow"
-        private const val DATE_FORMAT = "yyyy/MM/dd HH:mm"
     }
 
     override fun onCreateView(
@@ -35,12 +38,11 @@ class WeatherFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
-
         dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
 
         val repository = WeatherService()
-        val viewModelFactory =
-            WeatherViewModelFactory(repository)
+        val viewModelFactory = WeatherViewModelFactory(repository)
+
         apiViewModel = ViewModelProvider(this, viewModelFactory).get(WeatherApiViewModel::class.java)
         observeGetCurrentWeather()
 
@@ -55,7 +57,11 @@ class WeatherFragment : Fragment() {
         apiViewModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
 
             if (response.isSuccessful) {
-                Glide.with(this).load(response.body()?.current?.icons?.first()).into(binding.weatherIconImageView)
+                GlideImageLoader.load(
+                    LoadPhotoConfig(response.body()?.current?.icons?.first().toString()),
+                    binding.weatherIconImageView
+                )
+
                 binding.weather = response.body()
                 insertWeatherHistory()
             } else {
@@ -73,15 +79,10 @@ class WeatherFragment : Fragment() {
             weatherBinding?.current?.temperature,
             weatherBinding?.current?.feelslike,
             weatherBinding?.current?.icons?.first().toString(),
-            getCurrentDateTime()
+            SimpleDateFormat(DateFormat.DB_DATE_FORMAT, Locale.US).format(Date())
         )
 
         dbViewModel.add(weather)
-    }
-
-    private fun getCurrentDateTime(): String {
-        val format = SimpleDateFormat(DATE_FORMAT, Locale.US)
-        return format.format(Date())
     }
 
     private fun getCurrentWeatherButtonListeners() {
@@ -102,7 +103,9 @@ class WeatherFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.historyMenuItem -> this.findNavController().navigate(R.id.action_weatherFragment_to_historyFragment)
+            R.id.historyMenuItem -> this.findNavController().navigate(
+                R.id.action_weatherFragment_to_historyFragment
+            )
         }
 
         return true
