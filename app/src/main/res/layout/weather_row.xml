@@ -79,11 +79,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="21.04.2020"
+        android:text="21 April 2021 21:12"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rowCityName"
-        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintEnd_toStartOf="@+id/temperatureText"
         app:layout_constraintStart_toStartOf="@+id/rowCityName"
         app:layout_constraintTop_toBottomOf="@+id/rowCityName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

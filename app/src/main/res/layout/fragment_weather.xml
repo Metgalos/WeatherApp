@@ -15,68 +15,84 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/temperatureValueTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{weather.current.temperature.toString()}"
-            app:layout_constraintBottom_toBottomOf="@+id/temperatureTextView"
-            app:layout_constraintEnd_toEndOf="@+id/getCurrentWeatherButton"
-            app:layout_constraintStart_toEndOf="@+id/temperatureTextView"
-            app:layout_constraintTop_toTopOf="@+id/temperatureTextView" />
-
-        <TextView
-            android:id="@+id/temperatureFeelsValueTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{weather.current.feelslike.toString()}"
-            app:layout_constraintBottom_toBottomOf="@+id/temperatureFeelsTextView"
-            app:layout_constraintEnd_toEndOf="@+id/temperatureValueTextView"
-            app:layout_constraintStart_toStartOf="@+id/temperatureValueTextView"
-            app:layout_constraintTop_toTopOf="@+id/temperatureFeelsTextView" />
-
-        <TextView
-            android:id="@+id/temperatureTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/temperature"
-            app:layout_constraintEnd_toEndOf="@+id/cityNameText"
-            app:layout_constraintStart_toStartOf="@+id/cityNameText"
-            app:layout_constraintTop_toBottomOf="@+id/cityNameText" />
-
-        <TextView
-            android:id="@+id/temperatureFeelsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/temperature_feels"
-            app:layout_constraintEnd_toEndOf="@+id/temperatureTextView"
-            app:layout_constraintStart_toStartOf="@+id/temperatureTextView"
-            app:layout_constraintTop_toBottomOf="@+id/temperatureTextView" />
-
-        <ImageView
-            android:id="@+id/weatherIconImageView"
-            android:layout_width="45dp"
-            android:layout_height="52dp"
-            android:contentDescription="@string/weatherIconDescription"
-            app:layout_constraintBottom_toBottomOf="@+id/temperatureFeelsTextView"
-            app:layout_constraintEnd_toStartOf="@+id/getCurrentWeatherButton"
-            app:layout_constraintStart_toStartOf="@+id/getCurrentWeatherButton"
-            app:layout_constraintTop_toTopOf="@+id/temperatureTextView"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
-
-        <TextView
-            android:id="@+id/cityNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{weather.location.name}"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/weatherDataLayout"
+            android:layout_width="276dp"
+            android:layout_height="140dp"
+            android:padding="16dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/getCurrentWeatherButton"
-            app:layout_constraintVertical_bias="0.068" />
+            app:layout_constraintVertical_bias="0.10">
+
+            <TextView
+                android:id="@+id/temperatureValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{weather != null ? weather.current.temperature.toString() : null}"
+                app:layout_constraintBottom_toBottomOf="@+id/temperatureFeelsTextView"
+                app:layout_constraintEnd_toEndOf="@+id/temperatureFeelsValueTextView"
+                app:layout_constraintStart_toStartOf="@+id/temperatureFeelsValueTextView"
+                app:layout_constraintTop_toTopOf="@+id/temperatureFeelsTextView"
+                tools:text="13" />
+
+            <TextView
+                android:id="@+id/temperatureFeelsValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{weather != null ? weather.current.feelslike.toString() : null}"
+                app:layout_constraintBottom_toBottomOf="@+id/temperatureTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/temperatureTextView"
+                app:layout_constraintTop_toTopOf="@+id/temperatureTextView"
+                tools:text="13" />
+
+            <TextView
+                android:id="@+id/temperatureTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/temperature"
+                app:layout_constraintBottom_toTopOf="@+id/temperatureFeelsTextView"
+                app:layout_constraintEnd_toEndOf="@+id/cityNameText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/cityNameText"
+                app:layout_constraintTop_toBottomOf="@+id/cityNameText" />
+
+            <TextView
+                android:id="@+id/temperatureFeelsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/temperature_feels"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/temperatureTextView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/temperatureTextView"
+                app:layout_constraintTop_toBottomOf="@+id/temperatureTextView" />
+
+            <ImageView
+                android:id="@+id/weatherIconImageView"
+                android:layout_width="45dp"
+                android:layout_height="52dp"
+                android:contentDescription="@string/weatherIconDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/temperatureTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <TextView
+                android:id="@+id/cityNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{weather != null ? weather.location.name : null}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/moscow" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/enterCityText"

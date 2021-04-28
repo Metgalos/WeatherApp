@@ -2,15 +2,16 @@ package com.example.weatherapp.weatherapi.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.weatherapp.weatherapi.WeatherService
+import com.example.weatherapp.weatherapi.WeatherApi
+import javax.inject.Inject
 
-class WeatherViewModelFactory(
-    private val weatherService: WeatherService
+class WeatherViewModelFactory @Inject constructor(
+    private val weatherApi: WeatherApi
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return WeatherApiViewModel(
-            weatherService
+            weatherApi
         ) as T
     }
 }

@@ -10,19 +10,14 @@ import com.example.weatherapp.weatherstore.WeatherRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WeatherDatabaseViewModel(application: Application): AndroidViewModel(application) {
+class WeatherDatabaseViewModel(application: Application) : AndroidViewModel(application) {
 
     val getAll: LiveData<List<Weather>>
     private val repository: WeatherRepository
 
     init {
-        val weatherDao = WeatherDatabase.getDatabase(
-            application
-        ).weatherDao()
-        repository =
-            WeatherRepository(
-                weatherDao
-            )
+        val weatherDao = WeatherDatabase.getDatabase(application).weatherDao()
+        repository = WeatherRepository(weatherDao)
         getAll = repository.getAll
     }
 

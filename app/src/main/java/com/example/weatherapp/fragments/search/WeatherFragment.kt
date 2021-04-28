@@ -9,13 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.weatherstore.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.weatherapi.viewmodel.WeatherApiViewModel
-import com.example.weatherapp.weatherapi.WeatherService
-import com.example.weatherapp.weatherapi.viewmodel.WeatherViewModelFactory
 import com.example.weatherapp.infrastructure.DateFormat
 import com.example.weatherapp.infrastructure.image.GlideImageLoader
 import com.example.weatherapp.infrastructure.image.LoadPhotoConfig
@@ -26,12 +24,8 @@ import java.util.*
 
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
-    private lateinit var apiViewModel: WeatherApiViewModel
+    private val apiViewModel: WeatherApiViewModel = App.appComponent.getWeatherViewModel()
     private lateinit var dbViewModel: WeatherDatabaseViewModel
-
-    companion object {
-        private const val DEFAULT_CITY = "Moscow"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +33,7 @@ class WeatherFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
-
-        val repository = WeatherService()
-        val viewModelFactory = WeatherViewModelFactory(repository)
-
-        apiViewModel = ViewModelProvider(this, viewModelFactory).get(WeatherApiViewModel::class.java)
         observeGetCurrentWeather()
-
-        apiViewModel.getCurrentWeather(DEFAULT_CITY)
 
         getCurrentWeatherButtonListeners()
 
@@ -55,7 +42,6 @@ class WeatherFragment : Fragment() {
 
     private fun observeGetCurrentWeather() {
         apiViewModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
-
             if (response.isSuccessful) {
                 GlideImageLoader.load(
                     LoadPhotoConfig(response.body()?.current?.icons?.first().toString()),
@@ -63,6 +49,7 @@ class WeatherFragment : Fragment() {
                 )
 
                 binding.weather = response.body()
+                binding.weatherDataLayout.visibility = View.VISIBLE
                 insertWeatherHistory()
             } else {
                 Log.d("Response", response.errorBody().toString())

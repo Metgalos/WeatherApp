@@ -15,8 +15,7 @@ abstract class WeatherDatabase: RoomDatabase() {
         private var instance: WeatherDatabase? = null
 
         fun getDatabase(context: Context): WeatherDatabase {
-            val instance =
-                instance
+            val instance = instance
 
             if (instance != null) {
                 return instance
