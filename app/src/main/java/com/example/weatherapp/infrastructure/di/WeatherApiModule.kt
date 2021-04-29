@@ -20,7 +20,7 @@ class WeatherApiModule {
 
     @Provides
     @Singleton
-    fun provideWeatherApiViewModel(weatherApi: WeatherApi): WeatherApiViewModel {
-        return WeatherViewModelFactory(weatherApi).create(WeatherApiViewModel::class.java)
+    fun provideWeatherViewModelFactory(weatherApi: WeatherApi): WeatherViewModelFactory {
+        return WeatherViewModelFactory(weatherApi)
     }
 }
