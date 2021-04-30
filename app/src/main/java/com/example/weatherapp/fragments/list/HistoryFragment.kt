@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHistoryBinding
-import com.example.weatherapp.weatherstore.viewmodel.WeatherDatabaseViewModel
+import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
 
 
 class HistoryFragment : Fragment() {

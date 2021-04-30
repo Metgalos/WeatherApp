@@ -2,8 +2,6 @@ package com.example.weatherapp.infrastructure.di
 
 
 import com.example.weatherapp.weatherapi.WeatherApi
-import com.example.weatherapp.weatherapi.viewmodel.WeatherApiViewModel
-import com.example.weatherapp.weatherapi.viewmodel.WeatherViewModelFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -16,11 +14,5 @@ class WeatherApiModule {
     @Singleton
     fun provideWeatherApiService(retrofitBuilder: Retrofit.Builder): WeatherApi {
         return retrofitBuilder.baseUrl(WeatherApi.BASE_URL).build().create(WeatherApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideWeatherViewModelFactory(weatherApi: WeatherApi): WeatherViewModelFactory {
-        return WeatherViewModelFactory(weatherApi)
     }
 }

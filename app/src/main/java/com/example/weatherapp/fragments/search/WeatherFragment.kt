@@ -1,6 +1,5 @@
 package com.example.weatherapp.fragments.search
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,60 +8,59 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.weatherapp.App
 import com.example.weatherapp.R
 import com.example.weatherapp.weatherstore.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
-import com.example.weatherapp.weatherapi.viewmodel.WeatherApiViewModel
+import com.example.weatherapp.weatherapi.WeatherApiViewModel
 import com.example.weatherapp.infrastructure.DateFormat
 import com.example.weatherapp.infrastructure.image.GlideImageLoader
 import com.example.weatherapp.infrastructure.image.LoadPhotoConfig
-import com.example.weatherapp.weatherapi.viewmodel.WeatherViewModelFactory
-import com.example.weatherapp.weatherstore.viewmodel.WeatherDatabaseViewModel
+import com.example.weatherapp.infrastructure.viewmodel.EventObserver
+import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
-    private lateinit var apiViewModel: WeatherApiViewModel
-    private lateinit var dbViewModel: WeatherDatabaseViewModel
-    private val viewModelFactory: WeatherViewModelFactory = App.appComponent.getWeatherViewModelFactory()
+    private val apiViewModel: WeatherApiViewModel by viewModels()
+    private val dbViewModel: WeatherDatabaseViewModel by viewModels()
+    private val navigationEventsObserver = EventObserver {event ->
+        when (event) {
+            is WeatherFragmentNavigation.GetCurrentWeather -> getCurrentWeather()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
-        dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
-        apiViewModel = viewModelFactory.create(WeatherApiViewModel::class.java)
-
-        observeGetCurrentWeather()
-
+        apiViewModel.emitter.observe(viewLifecycleOwner, navigationEventsObserver)
         getCurrentWeatherButtonListeners()
-
         return binding.root
     }
 
-    private fun observeGetCurrentWeather() {
-        apiViewModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
-            if (response.isSuccessful) {
+    private fun getCurrentWeather() {
+        val response = apiViewModel.myResponse.value
+
+        response?.let {
+            if (it.isSuccessful) {
                 GlideImageLoader.load(
-                    LoadPhotoConfig(response.body()?.current?.icons?.first().toString()),
+                    LoadPhotoConfig(it.body()?.current?.icons?.first().toString()),
                     binding.weatherIconImageView
                 )
 
-                binding.weather = response.body()
+                binding.weather = it.body()
                 binding.weatherDataLayout.visibility = View.VISIBLE
                 insertWeatherHistory()
             } else {
-                Log.d("Response", response.errorBody().toString())
+                Log.d("Response", it.errorBody().toString())
                 Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     private fun insertWeatherHistory() {
@@ -81,7 +79,7 @@ class WeatherFragment : Fragment() {
 
     private fun getCurrentWeatherButtonListeners() {
         binding.getCurrentWeatherButton.setOnClickListener {
-            apiViewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
+            apiViewModel.doOnGetCurrentWeatherButtonClick(binding.enterCityEdit.text.toString())
         }
     }
 
