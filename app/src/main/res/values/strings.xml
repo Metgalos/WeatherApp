@@ -8,4 +8,6 @@
     <string name="temperature_feels">Ощущается: </string>
     <string name="weatherIconDescription">Иконка погоды</string>
     <string name="history">История</string>
+    <string name="weather_search_preferences_key">weather_search_preferences_key</string>
+    <string name="save_last_city_key">save_last_city_key</string>
 </resources>

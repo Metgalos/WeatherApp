@@ -1,6 +1,7 @@
 package com.example.weatherapp.fragments.search
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,7 +11,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.lifecycle.Observer
 import com.example.weatherapp.R
 import com.example.weatherapp.weatherstore.Weather
 import com.example.weatherapp.databinding.FragmentWeatherBinding
@@ -28,12 +28,17 @@ class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val apiViewModel: WeatherApiViewModel by viewModels()
     private val dbViewModel: WeatherDatabaseViewModel by viewModels()
+    private var preferences: SharedPreferences? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+        preferences = activity?.getSharedPreferences(
+            getString(R.string.weather_search_preferences_key), Context.MODE_PRIVATE
+        )
+        loadSavedData()
         setResponseObserver()
         setCurrentWeatherButtonListeners()
         return binding.root
@@ -53,6 +58,7 @@ class WeatherFragment : Fragment() {
 
                     if (needSave) {
                         insertWeatherHistory()
+                        it.body()?.location?.name?.let { city -> saveCity(city) }
                     }
                 } else {
                     Log.d("Response", it.errorBody().toString())
@@ -61,6 +67,20 @@ class WeatherFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun saveCity(city: String) {
+        preferences?.edit()?.let {
+            it.putString(getString(R.string.save_last_city_key), city)
+            it.apply()
+        }
+    }
+
+    private fun loadSavedData() {
+        preferences?.let {
+            val key = getString(R.string.save_last_city_key)
+            it.getString(key, null)?.let { city -> apiViewModel.getCurrentWeather(city) }
+        }
     }
 
     private fun insertWeatherHistory() {

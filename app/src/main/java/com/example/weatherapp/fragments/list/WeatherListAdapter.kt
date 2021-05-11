@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.infrastructure.DateFormat
 import com.example.weatherapp.infrastructure.image.GlideImageLoader
@@ -29,7 +28,6 @@ class WeatherListAdapter: RecyclerView.Adapter<WeatherListAdapter.ViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // TODO: посмотреть реализацию через databinding
         val currentItem = weatherList[position]
         holder.itemView.rowCityName.text = currentItem.location
         holder.itemView.temperatureValue.text = currentItem.temperature.toString()
