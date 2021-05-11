@@ -1,25 +1,17 @@
 package com.example.weatherapp.weatherstore
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.weatherstore.Weather
-import com.example.weatherapp.weatherstore.WeatherDatabase
-import com.example.weatherapp.weatherstore.WeatherRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WeatherDatabaseViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class WeatherDatabaseViewModel @Inject constructor(private val repository: WeatherRepository) : ViewModel() {
 
-    val getAll: LiveData<List<Weather>>
-    private val repository: WeatherRepository
-
-    init {
-        val weatherDao = WeatherDatabase.getDatabase(application).weatherDao()
-        repository = WeatherRepository(weatherDao)
-        getAll = repository.getAll
-    }
+    val getAll: LiveData<List<Weather>> = repository.getAll
 
     fun add(weather: Weather) {
         viewModelScope.launch(Dispatchers.IO) {

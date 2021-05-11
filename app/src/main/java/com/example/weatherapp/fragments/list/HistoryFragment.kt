@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHistoryBinding
 import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
@@ -22,7 +23,7 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_history, container, false)
 

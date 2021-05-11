@@ -1,8 +1,9 @@
 package com.example.weatherapp.weatherstore
 
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class WeatherRepository(private val weatherDao: WeatherDao) {
+class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) {
 
     val getAll: LiveData<List<Weather>> = weatherDao.getAll()
 

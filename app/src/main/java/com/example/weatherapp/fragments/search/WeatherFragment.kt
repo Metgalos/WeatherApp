@@ -19,10 +19,11 @@ import com.example.weatherapp.infrastructure.image.GlideImageLoader
 import com.example.weatherapp.infrastructure.image.LoadPhotoConfig
 import com.example.weatherapp.infrastructure.viewmodel.EventObserver
 import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+@AndroidEntryPoint
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val apiViewModel: WeatherApiViewModel by viewModels()
@@ -36,10 +37,10 @@ class WeatherFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         apiViewModel.emitter.observe(viewLifecycleOwner, navigationEventsObserver)
-        getCurrentWeatherButtonListeners()
+        setCurrentWeatherButtonListeners()
         return binding.root
     }
 
@@ -77,7 +78,7 @@ class WeatherFragment : Fragment() {
         dbViewModel.add(weather)
     }
 
-    private fun getCurrentWeatherButtonListeners() {
+    private fun setCurrentWeatherButtonListeners() {
         binding.getCurrentWeatherButton.setOnClickListener {
             apiViewModel.doOnGetCurrentWeatherButtonClick(binding.enterCityEdit.text.toString())
         }
