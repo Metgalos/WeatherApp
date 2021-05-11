@@ -1,15 +1,11 @@
 package com.example.weatherapp.weatherapi
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.App
-import com.example.weatherapp.fragments.search.WeatherFragmentNavigation
-import com.example.weatherapp.infrastructure.viewmodel.Emitter
 import com.example.weatherapp.weatherapi.models.Weather
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -18,14 +14,23 @@ import javax.inject.Inject
 class WeatherApiViewModel @Inject constructor(
     private val weatherApi: WeatherApi
 ): ViewModel() {
-    val emitter = Emitter()
+    private val _response = MutableLiveData<Response<Weather>>()
+    val response: LiveData<Response<Weather>>
+        get() {
+            if (_responseEvent.value == true) {
+                _responseEvent.value = false
+            }
+            return _response
+        }
 
-    val myResponse: MutableLiveData<Response<Weather>> = MutableLiveData()
+    private val _responseEvent = MutableLiveData<Boolean>()
+    val responseEvent: LiveData<Boolean>
+        get() = _responseEvent
 
-    fun doOnGetCurrentWeatherButtonClick(city: String) {
+    fun getCurrentWeather(city: String) {
         viewModelScope.launch() {
-            myResponse.value = weatherApi.getCurrentWeather(city)
-            emitter.emitAndExecute(WeatherFragmentNavigation.GetCurrentWeather())
+            _response.value = weatherApi.getCurrentWeather(city)
+            _responseEvent.value = true
         }
     }
 }
