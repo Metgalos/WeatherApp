@@ -53,7 +53,7 @@ class WeatherFragment : Fragment() {
                     binding.weatherDataLayout.visibility = View.VISIBLE
 
                     if (needSave) {
-                        dbViewModel.addFromResponse(binding.weather)
+                        dbViewModel.addFromResponse(binding.weather!!)
                         it.body()?.location?.name?.let { city -> storage.saveLastCity(city) }
                     }
                 } else {
@@ -73,6 +73,7 @@ class WeatherFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        storage.getLastCity()?.let { city -> apiViewModel.getCurrentWeather(city) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
