@@ -6,8 +6,8 @@ import com.example.weatherapp.data_layer.entity.Weather
 interface Storage {
     val preferences: SharedPreferences
 
-    fun getLastCity(): String?
-    fun saveLastCity(city: String)
+    suspend fun getLastCity(): String?
+    suspend fun saveLastCity(city: String)
 
     companion object {
         const val PREFERENCES_NAME = "main_preference"
