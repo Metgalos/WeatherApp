@@ -1,7 +1,6 @@
 package com.example.weatherapp.presentation_layer.screen.search
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -18,26 +17,24 @@ import com.example.weatherapp.domain_layer.network.viewmodel.WeatherApiViewModel
 import com.example.weatherapp.domain_layer.service.image_loader.GlideImageLoader
 import com.example.weatherapp.data_layer.model.LoadPhotoConfig
 import com.example.weatherapp.domain_layer.database.viewmodel.WeatherDatabaseViewModel
+import com.example.weatherapp.domain_layer.storage.Storage
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val apiViewModel: WeatherApiViewModel by viewModels()
     private val dbViewModel: WeatherDatabaseViewModel by viewModels()
-    private var preferences: SharedPreferences? = null
+    @Inject lateinit var storage: Storage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
-        preferences = activity?.getSharedPreferences(
-            getString(R.string.weather_search_preferences_key), Context.MODE_PRIVATE
-        )
-        loadSavedData()
         setResponseObserver()
         setCurrentWeatherButtonListeners()
         return binding.root
@@ -56,44 +53,15 @@ class WeatherFragment : Fragment() {
                     binding.weatherDataLayout.visibility = View.VISIBLE
 
                     if (needSave) {
-                        insertWeatherHistory()
-                        it.body()?.location?.name?.let { city -> saveCity(city) }
+                        dbViewModel.addFromResponse(binding.weather)
+                        it.body()?.location?.name?.let { city -> storage.saveLastCity(city) }
                     }
                 } else {
                     Log.d("Response", it.errorBody().toString())
                     Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
                 }
             }
-
         })
-    }
-
-    private fun saveCity(city: String) {
-        preferences?.edit()?.let {
-            it.putString(getString(R.string.save_last_city_key), city)
-            it.apply()
-        }
-    }
-
-    private fun loadSavedData() {
-        preferences?.let {
-            val key = getString(R.string.save_last_city_key)
-            it.getString(key, null)?.let { city -> apiViewModel.getCurrentWeather(city) }
-        }
-    }
-
-    private fun insertWeatherHistory() {
-        val weatherBinding = binding.weather
-
-        val weather = Weather(
-            weatherBinding?.location?.name,
-            weatherBinding?.current?.temperature,
-            weatherBinding?.current?.feelslike,
-            weatherBinding?.current?.icons?.first().toString(),
-            SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US).format(Date())
-        )
-
-        dbViewModel.add(weather)
     }
 
     private fun setCurrentWeatherButtonListeners() {
@@ -119,7 +87,7 @@ class WeatherFragment : Fragment() {
         }
 
         when (item.itemId) {
-            R.id.historyMenuItem -> this.findNavController().navigate(
+            R.id.historyMenuItem -> findNavController().navigate(
                 R.id.action_weatherFragment_to_historyFragment
             )
         }
