@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.viewModels
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHistoryBinding
 import com.example.weatherapp.weatherstore.WeatherDatabaseViewModel
@@ -18,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
-    private lateinit var dbViewModel: WeatherDatabaseViewModel
+    private val dbViewModel: WeatherDatabaseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +29,10 @@ class HistoryFragment : Fragment() {
             R.layout.fragment_history, container, false)
 
         val adapter = WeatherListAdapter()
-        val recyclerView = binding.historyRecycleView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        dbViewModel = ViewModelProvider(this).get(WeatherDatabaseViewModel::class.java)
+        binding.historyRecycleView.adapter = adapter
+        binding.historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
+
         dbViewModel.getAll.observe(viewLifecycleOwner, Observer { weathers ->
             adapter.setData(weathers)
         })
