@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
     android:padding="12dp">
 
     <ImageView
@@ -20,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Владивосток"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rowIconImageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Владивосток"/>
 
     <TextView
         android:id="@+id/temperatureFeelsText"
@@ -35,7 +36,6 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/temperatureText"
         app:layout_constraintTop_toTopOf="@+id/temperatureText" />
 
@@ -54,35 +54,50 @@
         android:id="@+id/temperatureValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="13"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/temperatureText"
         app:layout_constraintStart_toStartOf="@+id/temperatureText"
         app:layout_constraintTop_toBottomOf="@+id/temperatureText"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.75"
+        tools:text="13"/>
 
     <TextView
         android:id="@+id/temperatureFeelsValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/temperatureFeelsText"
         app:layout_constraintStart_toStartOf="@+id/temperatureFeelsText"
         app:layout_constraintTop_toBottomOf="@+id/temperatureFeelsText"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.75"
+        tools:text="10"/>
 
     <TextView
         android:id="@+id/datetimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="21 April 2021 21:12"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/temperatureText"
+        app:layout_constraintEnd_toStartOf="@+id/temperatureValue"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/rowCityName"
-        app:layout_constraintTop_toBottomOf="@+id/rowCityName" />
+        app:layout_constraintTop_toBottomOf="@+id/rowCityName"
+        tools:text="21 April 2021 21:12"/>
+
+    <Button
+        android:id="@+id/deleteItemButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="76dp"
+        android:layout_height="38dp"
+        android:text="@string/deleteButtonText"
+        android:textAlignment="viewStart"
+        android:textColor="@color/gray"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/temperatureFeelsText"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,4 +20,16 @@ class WeatherDatabaseViewModel @Inject constructor(private val repository: Weath
             repository.add(weather)
         }
     }
+
+    fun clear() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.clear()
+        }
+    }
+
+    fun delete(weather: WeatherEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(weather)
+        }
+    }
 }
