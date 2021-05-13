@@ -16,19 +16,12 @@ import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.domain_layer.network.viewmodel.WeatherApiViewModel
 import com.example.weatherapp.domain_layer.service.image_loader.GlideImageLoader
 import com.example.weatherapp.data_layer.model.LoadPhotoConfig
-import com.example.weatherapp.domain_layer.database.viewmodel.WeatherDatabaseViewModel
-import com.example.weatherapp.domain_layer.storage.Storage
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val apiViewModel: WeatherApiViewModel by viewModels()
-    private val dbViewModel: WeatherDatabaseViewModel by viewModels()
-    @Inject lateinit var storage: Storage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,25 +34,18 @@ class WeatherFragment : Fragment() {
     }
 
     private fun setResponseObserver() {
-        apiViewModel.responseEvent.observe(viewLifecycleOwner, { needSave ->
-            apiViewModel.response.value?.let {
-                if (it.isSuccessful) {
-                    GlideImageLoader.load(
-                        LoadPhotoConfig(it.body()?.current?.icons?.first().toString()),
-                        binding.weatherIconImageView
-                    )
-
-                    binding.weather = it.body()
-                    binding.weatherDataLayout.visibility = View.VISIBLE
-
-                    if (needSave) {
-                        dbViewModel.addFromResponse(binding.weather!!)
-                        it.body()?.location?.name?.let { city -> storage.saveLastCity(city) }
-                    }
-                } else {
-                    Log.d("Response", it.errorBody().toString())
-                    Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
-                }
+        apiViewModel.response.observe(viewLifecycleOwner, {
+            if (it.isSuccessful) {
+                GlideImageLoader.load(
+                    LoadPhotoConfig(it.body()?.current?.icons?.first().toString()),
+                    binding.weatherIconImageView
+                )
+                binding.enterCityEdit.setText(it.body()?.location?.name)
+                binding.weather = it.body()
+                binding.weatherDataLayout.visibility = View.VISIBLE
+            } else {
+                Log.d("Response", it.errorBody().toString())
+                Toast.makeText(context, "Response error", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -73,7 +59,6 @@ class WeatherFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        storage.getLastCity()?.let { city -> apiViewModel.getCurrentWeather(city) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

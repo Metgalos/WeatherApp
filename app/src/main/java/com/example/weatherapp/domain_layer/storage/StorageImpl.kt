@@ -7,9 +7,9 @@ class StorageImpl(private val context: Context) : Storage {
     override val preferences: SharedPreferences
         get() = context.getSharedPreferences(Storage.PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    override fun getLastCity(): String? = preferences.getString(LAST_CITY_KEY, null)
+    override suspend fun getLastCity(): String? = preferences.getString(LAST_CITY_KEY, null)
 
-    override fun saveLastCity(city: String) {
+    override suspend fun saveLastCity(city: String) {
         preferences.edit().putString(LAST_CITY_KEY, city).apply()
     }
 
