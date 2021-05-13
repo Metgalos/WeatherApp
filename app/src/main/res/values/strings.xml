@@ -8,4 +8,6 @@
     <string name="temperature_feels">Ощущается: </string>
     <string name="weatherIconDescription">Иконка погоды</string>
     <string name="history">История</string>
+    <string name="clearHistory">Очистить историю</string>
+    <string name="deleteButtonText">X</string>
 </resources>

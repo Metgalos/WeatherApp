@@ -1,17 +1,17 @@
 package com.example.weatherapp.presentation_layer.screen.history
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.fragment.app.viewModels
 import com.example.weatherapp.R
+import com.example.weatherapp.data_layer.entity.Weather
 import com.example.weatherapp.databinding.FragmentHistoryBinding
 import com.example.weatherapp.domain_layer.database.viewmodel.WeatherDatabaseViewModel
+import com.example.weatherapp.presentation_layer.screen.history.viewholder.HistoryViewHolderListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +29,12 @@ class HistoryFragment : Fragment() {
 
         val adapter = WeatherListAdapter()
 
+        adapter.setListener(object : HistoryViewHolderListener {
+            override fun onDeleteItem(weather: Weather) {
+                dbViewModel.delete(weather)
+            }
+        })
+
         binding.historyRecycleView.adapter = adapter
         binding.historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -37,5 +43,23 @@ class HistoryFragment : Fragment() {
         })
 
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.history_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.clearHistory -> dbViewModel.clear()
+        }
+
+        return true
     }
 }

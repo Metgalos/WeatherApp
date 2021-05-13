@@ -27,4 +27,12 @@ class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) 
 
         add(insertedWeather)
     }
+
+    suspend fun clear() {
+        weatherDao.clear()
+    }
+
+    suspend fun delete(weather: Weather) {
+        weatherDao.delete(weather)
+    }
 }
