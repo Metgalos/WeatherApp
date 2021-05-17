@@ -9,9 +9,7 @@ import com.example.weatherapp.data_layer.entity.Weather as WeatherEntity
 import com.example.weatherapp.domain_layer.database.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,11 +19,11 @@ class WeatherDatabaseViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        private const val PAGE_SIZE = 3
+        private const val PAGE_SIZE = 1
     }
 
     val history: StateFlow<PagingData<WeatherEntity>> =
-        Pager(PagingConfig(pageSize = PAGE_SIZE), pagingSourceFactory = {
+        Pager(PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false), pagingSourceFactory = {
             repository.getAllPaged()
         }).flow
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

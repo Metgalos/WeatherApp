@@ -2,11 +2,13 @@ package com.example.weatherapp.presentation_layer.screen.history
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.example.weatherapp.R
 import com.example.weatherapp.data_layer.entity.Weather
 import com.example.weatherapp.databinding.FragmentHistoryBinding
@@ -35,6 +37,7 @@ class HistoryFragment : Fragment() {
             R.layout.fragment_history, container, false)
 
         setDeleteItemListener()
+        addLoadListener()
 
         binding.historyRecycleView.adapter = adapter
         binding.historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
@@ -44,6 +47,16 @@ class HistoryFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun addLoadListener() {
+        adapter.addLoadStateListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                adapter.loadStateFlow.collectLatest { loadState ->
+                    binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
