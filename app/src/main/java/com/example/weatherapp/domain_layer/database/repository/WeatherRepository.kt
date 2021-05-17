@@ -13,10 +13,7 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) {
 
-    val getAll: LiveData<List<Weather>> = weatherDao.getAll()
     val getAllPaged: PagingSource<Int, Weather> = weatherDao.getAllPaged()
-
-    suspend fun get(page: Int, pageSize: Int): List<Weather> = weatherDao.get(page, pageSize)
 
     suspend fun add(weather: Weather) {
         weatherDao.add(weather)

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.example.weatherapp.domain_layer.database.AppDatabase
 import com.example.weatherapp.domain_layer.database.dao.WeatherDao
-import com.example.weatherapp.domain_layer.database.paging_source.WeatherHistoryPagingSource
 import com.example.weatherapp.domain_layer.database.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
