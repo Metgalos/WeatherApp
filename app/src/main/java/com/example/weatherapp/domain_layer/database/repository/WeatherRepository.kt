@@ -1,8 +1,5 @@
 package com.example.weatherapp.domain_layer.database.repository
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.example.weatherapp.data_layer.entity.Weather
 import com.example.weatherapp.data_layer.response.Weather as WeatherResponse
@@ -12,8 +9,6 @@ import java.util.*
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) {
-
-    val getAllPaged: PagingSource<Int, Weather> = weatherDao.getAllPaged()
 
     suspend fun add(weather: Weather) {
         weatherDao.add(weather)
@@ -38,4 +33,6 @@ class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) 
     suspend fun delete(weather: Weather) {
         weatherDao.delete(weather)
     }
+
+    fun getAllPaged(): PagingSource<Int, Weather> = weatherDao.getAllPaged()
 }

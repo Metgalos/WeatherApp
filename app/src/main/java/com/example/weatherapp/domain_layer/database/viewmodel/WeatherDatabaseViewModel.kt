@@ -1,6 +1,5 @@
 package com.example.weatherapp.domain_layer.database.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -21,10 +20,15 @@ class WeatherDatabaseViewModel @Inject constructor(
     private val repository: WeatherRepository
 ) : ViewModel() {
 
-    val history: StateFlow<PagingData<WeatherEntity>> = Pager(PagingConfig(pageSize = 3)) {
-        repository.getAllPaged
-    }.flow
-        .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+    companion object {
+        private const val PAGE_SIZE = 3
+    }
+
+    val history: StateFlow<PagingData<WeatherEntity>> =
+        Pager(PagingConfig(pageSize = PAGE_SIZE), pagingSourceFactory = {
+            repository.getAllPaged()
+        }).flow
+            .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
     fun add(weather: WeatherEntity) {
         viewModelScope.launch(Dispatchers.IO) {

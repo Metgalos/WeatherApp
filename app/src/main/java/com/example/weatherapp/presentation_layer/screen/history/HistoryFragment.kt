@@ -34,11 +34,7 @@ class HistoryFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_history, container, false)
 
-        adapter.setListener(object : HistoryViewHolderListener {
-            override fun onDeleteItem(weather: Weather) {
-                dbViewModel.delete(weather)
-            }
-        })
+        setDeleteItemListener()
 
         binding.historyRecycleView.adapter = adapter
         binding.historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
@@ -66,5 +62,13 @@ class HistoryFragment : Fragment() {
         }
 
         return true
+    }
+
+    private fun setDeleteItemListener() {
+        adapter.setListener(object : HistoryViewHolderListener {
+            override fun onDeleteItem(weather: Weather) {
+                dbViewModel.delete(weather)
+            }
+        })
     }
 }
