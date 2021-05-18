@@ -51,24 +51,6 @@ class HistoryFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.history_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.clearHistory -> dbViewModel.clear()
-        }
-
-        return true
-    }
-
     private fun setDeleteItemListener() {
         adapter.setListener(object : HistoryViewHolderListener {
             override fun onDeleteItem(weather: Weather) {

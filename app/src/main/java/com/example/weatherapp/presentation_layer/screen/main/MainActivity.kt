@@ -19,5 +19,19 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = findNavController(R.id.navHostFragment)
+
+        binding.mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.search -> {
+                    navController.navigate(R.id.action_global_weatherFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.history -> {
+                    navController.navigate(R.id.action_global_historyFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> return@setOnNavigationItemSelectedListener false
+            }
+        }
     }
 }
