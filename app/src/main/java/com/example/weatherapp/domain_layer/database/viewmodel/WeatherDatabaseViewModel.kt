@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.weatherapp.domain_layer.database.repository.HistoryPagingSource
 import com.example.weatherapp.data_layer.entity.Weather as WeatherEntity
 import com.example.weatherapp.domain_layer.database.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,7 @@ class WeatherDatabaseViewModel @Inject constructor(
 
     val history: StateFlow<PagingData<WeatherEntity>> =
         Pager(PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false), pagingSourceFactory = {
-            repository.getAllPaged()
+            HistoryPagingSource(repository)
         }).flow
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 

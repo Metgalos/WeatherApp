@@ -13,9 +13,6 @@ interface WeatherDao {
         private const val TABLE_NAME = "responses_history"
     }
 
-    @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC")
-    fun getAll(): LiveData<List<Weather>>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun add(weather: Weather)
 
@@ -27,4 +24,7 @@ interface WeatherDao {
 
     @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC")
     fun getAllPaged(): PagingSource<Int, Weather>
+
+    @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    suspend fun getAll(page: Int, pageSize: Int): List<Weather>
 }

@@ -35,4 +35,6 @@ class WeatherRepository @Inject constructor(private val weatherDao: WeatherDao) 
     }
 
     fun getAllPaged(): PagingSource<Int, Weather> = weatherDao.getAllPaged()
+
+    suspend fun getAll(page: Int, pageSize: Int): List<Weather> = weatherDao.getAll(page, pageSize)
 }

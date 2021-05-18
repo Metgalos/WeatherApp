@@ -13,6 +13,7 @@ import com.example.weatherapp.R
 import com.example.weatherapp.data_layer.entity.Weather
 import com.example.weatherapp.databinding.FragmentHistoryBinding
 import com.example.weatherapp.domain_layer.database.viewmodel.WeatherDatabaseViewModel
+import com.example.weatherapp.presentation_layer.screen.history.adapter.HistoryLoaderStateAdapter
 import com.example.weatherapp.presentation_layer.screen.history.adapter.WeatherListAdapter
 import com.example.weatherapp.presentation_layer.screen.history.viewholder.HistoryViewHolderListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,9 +38,10 @@ class HistoryFragment : Fragment() {
             R.layout.fragment_history, container, false)
 
         setDeleteItemListener()
-        addLoadListener()
 
-        binding.historyRecycleView.adapter = adapter
+        binding.historyRecycleView.adapter = adapter.withLoadStateFooter(
+            HistoryLoaderStateAdapter()
+        )
         binding.historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
 
         lifecycleScope.launch {
@@ -47,16 +49,6 @@ class HistoryFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun addLoadListener() {
-        adapter.addLoadStateListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                adapter.loadStateFlow.collectLatest { loadState ->
-                    binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
-                }
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
