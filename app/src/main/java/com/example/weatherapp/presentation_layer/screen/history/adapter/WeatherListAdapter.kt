@@ -32,4 +32,9 @@ class WeatherListAdapter : PagingDataAdapter<Weather, HistoryViewHolder>(diffCal
     fun setListener(listener: HistoryViewHolderListener) {
         this.listener = listener
     }
+
+    fun deleteItem(weather: Weather) {
+        val position = snapshot().items.indexOf(weather)
+        notifyItemRemoved(position)
+    }
 }

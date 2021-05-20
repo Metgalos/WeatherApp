@@ -90,12 +90,13 @@
     <Button
         android:id="@+id/deleteItemButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="76dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
         android:text="@string/deleteButtonText"
         android:textAlignment="viewStart"
         android:textColor="@color/gray"
-        android:background="@null"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/temperatureFeelsText"
         app:layout_constraintTop_toTopOf="parent" />
