@@ -25,7 +25,7 @@ class WeatherApiViewModel @Inject constructor(
     val response: LiveData<Response<Weather>> = _response
 
     init {
-//        getLastWeather()
+        getLastWeather()
     }
 
     fun getCurrentWeather(city: String) {
@@ -46,9 +46,6 @@ class WeatherApiViewModel @Inject constructor(
         viewModelScope.launch {
             weatherResponse.body()?.let { weather ->
                 if (weatherResponse.isSuccessful) {
-                    for (i in 1..20) {
-                        weatherRepository.addFromRequest(weather)
-                    }
                     weatherRepository.addFromRequest(weather)
                     weather.location?.name?.let { city ->
                         storage.saveLastCity(city) }
