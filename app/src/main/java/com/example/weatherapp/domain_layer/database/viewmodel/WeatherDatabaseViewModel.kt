@@ -24,9 +24,16 @@ class WeatherDatabaseViewModel @Inject constructor(
     }
 
     val history: StateFlow<PagingData<WeatherEntity>> =
-        Pager(PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false), pagingSourceFactory = {
-            HistoryPagingSource(repository)
-        }).flow
+        Pager(
+            PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                HistoryPagingSource(repository)
+            }
+        ).flow
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
     fun add(weather: WeatherEntity) {
