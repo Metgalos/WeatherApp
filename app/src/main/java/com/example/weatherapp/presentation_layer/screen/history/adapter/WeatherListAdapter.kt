@@ -2,6 +2,7 @@ package com.example.weatherapp.presentation_layer.screen.history.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherapp.R
@@ -33,8 +34,8 @@ class WeatherListAdapter : PagingDataAdapter<Weather, HistoryViewHolder>(diffCal
         this.listener = listener
     }
 
-    fun deleteItem(weather: Weather) {
-        val position = snapshot().items.indexOf(weather)
-        notifyItemRemoved(position)
+    suspend fun deleteItem(weather: Weather) {
+        val data = snapshot().items.filter { weatherItem -> weatherItem.id != weather.id }
+        submitData(PagingData.from(data))
     }
 }

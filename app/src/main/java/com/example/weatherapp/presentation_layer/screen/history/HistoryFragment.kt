@@ -54,8 +54,10 @@ class HistoryFragment : Fragment() {
     private fun setDeleteItemListener() {
         adapter.setListener(object : HistoryViewHolderListener {
             override fun onDeleteItem(weather: Weather) {
-                dbViewModel.delete(weather)
-                adapter.deleteItem(weather)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    dbViewModel.delete(weather)
+                    adapter.deleteItem(weather)
+                }
             }
         })
     }
