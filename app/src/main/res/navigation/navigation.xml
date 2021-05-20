@@ -9,12 +9,30 @@
         android:id="@+id/weatherFragment"
         android:name="com.example.weatherapp.presentation_layer.screen.search.WeatherFragment"
         android:label="fragment_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <argument
+            android:name="location"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.weatherapp.presentation_layer.screen.history.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/historyFragment" >
+            <argument
+                android:name="location" />
+        </action>
+    </fragment>
     <action android:id="@+id/action_global_weatherFragment" app:destination="@id/weatherFragment" />
     <action android:id="@+id/action_global_historyFragment" app:destination="@id/historyFragment" />
 </navigation>

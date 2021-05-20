@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.weatherapp.R
 import com.example.weatherapp.data_layer.entity.Weather
@@ -25,6 +26,7 @@ class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
     private val dbViewModel: WeatherDatabaseViewModel by viewModels()
+    private val navController by lazy(::findNavController)
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         WeatherListAdapter()
@@ -58,6 +60,12 @@ class HistoryFragment : Fragment() {
                     dbViewModel.delete(weather)
                     adapter.deleteItem(weather)
                 }
+            }
+
+            override fun onRepeateResponse(location: String) {
+                navController.navigate(
+                    HistoryFragmentDirections.actionHistoryFragmentToWeatherFragment(location)
+                )
             }
         })
     }

@@ -19,6 +19,10 @@ class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val apiViewModel: WeatherApiViewModel by viewModels()
 
+    companion object {
+        private const val LOCATION_ARGS_KEY = "location"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,6 +30,7 @@ class WeatherFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         setResponseObserver()
         setCurrentWeatherButtonListeners()
+        arguments?.getString(LOCATION_ARGS_KEY)?.let { apiViewModel.getCurrentWeather(it) }
         return binding.root
     }
 

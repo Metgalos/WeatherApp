@@ -21,8 +21,10 @@ class HistoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             itemView.rowIconImageView
         )
 
-        itemView.deleteItemButton.setOnClickListener {
-            listener?.onDeleteItem(data)
+        itemView.deleteItemButton.setOnClickListener { listener?.onDeleteItem(data) }
+
+        data.location?.let { location ->
+            itemView.revertButton.setOnClickListener { listener?.onRepeateResponse(location) }
         }
     }
 }
