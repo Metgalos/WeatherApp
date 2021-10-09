@@ -19,6 +19,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        Properties properties = getLocalProperties()
+        buildConfigField("String", "API_KEY", properties["API_KEY"])
     }
 
     buildFeatures {
@@ -104,4 +107,12 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+}
+
+def getLocalProperties() {
+    Properties properties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        properties.load(new FileInputStream(rootProject.file("local.properties")))
+    }
+    return properties
 }
