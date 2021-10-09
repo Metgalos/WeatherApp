@@ -1,7 +1,7 @@
 package com.example.weatherapp.presentation_layer.screen.history.viewholder
 
-import com.example.weatherapp.data_layer.entity.Weather
+import com.example.weatherapp.data_layer.entity.WeatherEntity
 
 interface HistoryViewHolderListener {
-    fun onDeleteItem(weather: Weather)
+    fun onDeleteItem(weatherEntity: WeatherEntity)
 }

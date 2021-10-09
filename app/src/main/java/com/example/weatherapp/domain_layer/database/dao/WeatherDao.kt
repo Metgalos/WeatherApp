@@ -1,10 +1,8 @@
 package com.example.weatherapp.domain_layer.database.dao
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.paging.PagingSource
 import androidx.room.*
-import com.example.weatherapp.data_layer.entity.Weather
+import com.example.weatherapp.data_layer.entity.WeatherEntity
 
 @Dao
 interface WeatherDao {
@@ -14,17 +12,17 @@ interface WeatherDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun add(weather: Weather)
+    suspend fun add(weatherEntity: WeatherEntity)
 
     @Query("DELETE FROM $TABLE_NAME")
     suspend fun clear()
 
     @Delete
-    suspend fun delete(weather: Weather)
+    suspend fun delete(weatherEntity: WeatherEntity)
 
     @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC")
-    fun getAllPaged(): PagingSource<Int, Weather>
+    fun getAllPaged(): PagingSource<Int, WeatherEntity>
 
     @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
-    suspend fun getAll(page: Int, pageSize: Int): List<Weather>
+    suspend fun getAll(page: Int, pageSize: Int): List<WeatherEntity>
 }

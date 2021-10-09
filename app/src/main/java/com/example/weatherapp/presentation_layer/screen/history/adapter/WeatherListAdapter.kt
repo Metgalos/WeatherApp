@@ -6,19 +6,19 @@ import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.weatherapp.R
-import com.example.weatherapp.data_layer.entity.Weather
+import com.example.weatherapp.data_layer.entity.WeatherEntity
 import com.example.weatherapp.presentation_layer.screen.history.viewholder.HistoryViewHolder
 import com.example.weatherapp.presentation_layer.screen.history.viewholder.HistoryViewHolderListener
 
-class WeatherListAdapter : PagingDataAdapter<Weather, HistoryViewHolder>(diffCallback) {
+class WeatherListAdapter : PagingDataAdapter<WeatherEntity, HistoryViewHolder>(diffCallback) {
 
     private var listener: HistoryViewHolderListener? = null
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Weather>() {
-            override fun areItemsTheSame(old: Weather, new: Weather): Boolean = (old.id == new.id)
+        private val diffCallback = object : DiffUtil.ItemCallback<WeatherEntity>() {
+            override fun areItemsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean = (old.id == aNew.id)
 
-            override fun areContentsTheSame(old: Weather, new: Weather): Boolean = (old == new)
+            override fun areContentsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean = (old == aNew)
         }
     }
 
@@ -34,8 +34,8 @@ class WeatherListAdapter : PagingDataAdapter<Weather, HistoryViewHolder>(diffCal
         this.listener = listener
     }
 
-    suspend fun deleteItem(weather: Weather) {
-        val data = snapshot().items.filter { weatherItem -> weatherItem.id != weather.id }
+    suspend fun deleteItem(weatherEntity: WeatherEntity) {
+        val data = snapshot().items.filter { weatherItem -> weatherItem.id != weatherEntity.id }
         submitData(PagingData.from(data))
     }
 }

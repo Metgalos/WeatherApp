@@ -8,7 +8,7 @@
     <data>
         <variable
             name="weather"
-            type="com.example.weatherapp.data_layer.response.Weather" />
+            type="com.example.weatherapp.data_layer.response.MainWeatherResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
                 android:id="@+id/temperatureValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{weather != null ? weather.current.temperature.toString() : null}"
+                android:text="@{weather != null ? weather.currentResponse.temperature.toString() : null}"
                 app:layout_constraintBottom_toBottomOf="@+id/temperatureFeelsTextView"
                 app:layout_constraintEnd_toEndOf="@+id/temperatureFeelsValueTextView"
                 app:layout_constraintStart_toStartOf="@+id/temperatureFeelsValueTextView"
@@ -42,7 +42,7 @@
                 android:id="@+id/temperatureFeelsValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{weather != null ? weather.current.feelslike.toString() : null}"
+                android:text="@{weather != null ? weather.currentResponse.feelslike.toString() : null}"
                 app:layout_constraintBottom_toBottomOf="@+id/temperatureTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/temperatureTextView"

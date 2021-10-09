@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "responses_history")
-data class Weather(
+data class WeatherEntity(
     @ColumnInfo(name = "location") val location: String?,
     @ColumnInfo(name = "temperature") val temperature: Int?,
     @ColumnInfo(name = "feels_like") val feelslike: Int?,

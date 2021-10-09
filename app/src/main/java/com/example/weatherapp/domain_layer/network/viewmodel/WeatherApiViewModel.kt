@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data_layer.response.Weather
+import com.example.weatherapp.data_layer.response.MainWeatherResponse
 import com.example.weatherapp.domain_layer.database.repository.WeatherRepository
 import com.example.weatherapp.domain_layer.network.api.WeatherApi
-import com.example.weatherapp.data_layer.response.Weather as WeatherResponse
+import com.example.weatherapp.data_layer.response.MainWeatherResponse as WeatherResponse
 import com.example.weatherapp.domain_layer.storage.Storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,8 +21,8 @@ class WeatherApiViewModel @Inject constructor(
     private val storage: Storage
 ): ViewModel() {
 
-    private val _response = MutableLiveData<Response<Weather>>()
-    val response: LiveData<Response<Weather>> = _response
+    private val _response = MutableLiveData<Response<MainWeatherResponse>>()
+    val response: LiveData<Response<MainWeatherResponse>> = _response
 
     init {
         getLastWeather()

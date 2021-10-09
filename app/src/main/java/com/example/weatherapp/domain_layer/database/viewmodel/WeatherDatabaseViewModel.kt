@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.weatherapp.domain_layer.database.repository.HistoryPagingSource
-import com.example.weatherapp.data_layer.entity.Weather as WeatherEntity
+import com.example.weatherapp.data_layer.entity.WeatherEntity as WeatherEntity
 import com.example.weatherapp.domain_layer.database.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
