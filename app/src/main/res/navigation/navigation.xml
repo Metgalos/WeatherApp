@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="com.example.weatherapp.presentation_layer.screen.search.WeatherFragment"
+        android:name="com.example.weatherapp.presentation.screen.search.WeatherFragment"
         android:label="fragment_weather"
         tools:layout="@layout/fragment_weather" />
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.weatherapp.presentation_layer.screen.history.HistoryFragment"
+        android:name="com.example.weatherapp.presentation.screen.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <action android:id="@+id/action_global_weatherFragment" app:destination="@id/weatherFragment" />
