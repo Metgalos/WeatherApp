@@ -2,31 +2,25 @@ package com.example.weatherapp.presentation.screen.search
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
+import android.view.View
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import com.example.weatherapp.R
-import com.example.weatherapp.databinding.FragmentWeatherBinding
-import com.example.weatherapp.data.network.viewmodel.WeatherApiViewModel
-import com.example.weatherapp.domain.service.image_loader.GlideImageLoader
 import com.example.weatherapp.data.model.LoadPhotoConfig
+import com.example.weatherapp.databinding.FragmentSearchBinding
+import com.example.weatherapp.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WeatherFragment : Fragment() {
-    private lateinit var binding: FragmentWeatherBinding
-    private val apiViewModel: WeatherApiViewModel by viewModels()
+class SearchFragment : BaseFragment<FragmentSearchBinding>(
+    FragmentSearchBinding::inflate,
+) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+    private val viewModel: SearchViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setResponseObserver()
         setCurrentWeatherButtonListeners()
-        return binding.root
     }
 
     private fun setResponseObserver() {
