@@ -1,4 +1,4 @@
-package com.example.weatherapp.data.database.viewmodel
+package com.example.weatherapp.presentation.screen.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,17 +6,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.weatherapp.data.database.repository.HistoryPagingSource
-import com.example.weatherapp.data.entity.WeatherEntity as WeatherEntity
-import com.example.weatherapp.data.database.repository.WeatherRepository
+import com.example.weatherapp.data.database.repository.WeatherRepositoryImpl
+import com.example.weatherapp.data.entity.WeatherEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherDatabaseViewModel @Inject constructor(
-    private val repository: WeatherRepository
+class HistoryViewModel @Inject constructor(
+    private val repositoryImpl: WeatherRepositoryImpl
 ) : ViewModel() {
 
     companion object {
@@ -31,26 +33,26 @@ class WeatherDatabaseViewModel @Inject constructor(
                 initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                HistoryPagingSource(repository)
+                HistoryPagingSource(repositoryImpl)
             }
         ).flow
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
     fun add(weather: WeatherEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.add(weather)
+            repositoryImpl.add(weather)
         }
     }
 
     fun clear() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.clear()
+            repositoryImpl.clear()
         }
     }
 
     fun delete(weather: WeatherEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.delete(weather)
+            repositoryImpl.delete(weather)
         }
     }
 }

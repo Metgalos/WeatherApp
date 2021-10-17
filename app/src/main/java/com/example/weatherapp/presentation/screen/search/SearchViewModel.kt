@@ -1,24 +1,25 @@
-package com.example.weatherapp.data.network.viewmodel
+package com.example.weatherapp.presentation.screen.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.response.MainWeatherResponse
-import com.example.weatherapp.data.database.repository.WeatherRepository
+import com.example.weatherapp.data.database.repository.WeatherRepositoryImpl
 import com.example.weatherapp.data.network.api.WeatherApi
-import com.example.weatherapp.data.response.MainWeatherResponse as WeatherResponse
+import com.example.weatherapp.data.response.MainWeatherResponse
 import com.example.weatherapp.data.storage.Storage
+import com.example.weatherapp.domain.interactor.WeatherInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import javax.inject.Inject
 
 @HiltViewModel
-class WeatherApiViewModel @Inject constructor(
+class SearchViewModel @Inject constructor(
     private val weatherApi: WeatherApi,
-    private val weatherRepository: WeatherRepository,
-    private val storage: Storage
+    private val weatherRepositoryImpl: WeatherRepositoryImpl,
+    private val storage: Storage,
+    private val weatherInteractor: WeatherInteractor,
 ) : ViewModel() {
 
     private val _response = MutableLiveData<Response<MainWeatherResponse>>()
@@ -29,10 +30,8 @@ class WeatherApiViewModel @Inject constructor(
     }
 
     fun getCurrentWeather(city: String) {
-        viewModelScope.launch() {
-            val responseValue = weatherApi.getCurrentWeather(city)
-            _response.value = responseValue
-            saveLastWeather(responseValue)
+        viewModelScope.launch {
+            _response.value = weatherInteractor.getCurrentWeather(city)
         }
     }
 
@@ -42,11 +41,11 @@ class WeatherApiViewModel @Inject constructor(
         }
     }
 
-    private fun saveLastWeather(weatherResponse: Response<WeatherResponse>) {
+    private fun saveLastWeather(weatherResponse: Response<MainWeatherResponse>) {
         viewModelScope.launch {
             weatherResponse.body()?.let { weather ->
                 if (weatherResponse.isSuccessful) {
-                    weatherRepository.addFromRequest(weather)
+                    weatherRepositoryImpl.addFromRequest(weather)
                     weather.location?.name?.let { city ->
                         storage.saveLastCity(city) }
                 }
