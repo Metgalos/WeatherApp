@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.example.weatherapp.data.database.AppDatabase
 import com.example.weatherapp.data.database.dao.WeatherDao
-import com.example.weatherapp.data.database.repository.WeatherRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,10 +26,5 @@ class DatabaseModule {
     @Provides
     fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
         return appDatabase.weatherDao()
-    }
-
-    @Provides
-    fun provideWeatherRepository(weatherDao: WeatherDao): WeatherRepositoryImpl {
-        return WeatherRepositoryImpl(weatherDao)
     }
 }
