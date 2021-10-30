@@ -54,3 +54,9 @@ fun <T> Flow<Preferences>.get(key: Preferences.Key<T>, default: T): Flow<T> {
             preference[key] ?: default
         }
 }
+
+fun Int?.emptyIfNull(): Int = this ?: 0
+fun Double?.emptyIfNull(): Double = this ?: 0.00
+fun String?.emptyIfNull(): String = this ?: ""
+
+fun getIconUrl(code: String): String = "http://openweathermap.org/img/wn/$code@2x.png"

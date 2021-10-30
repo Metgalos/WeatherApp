@@ -6,4 +6,6 @@ data class Weather(
     val lon: Double,
     val temperature: Double,
     val feelsLike: Double,
+    val location: String,
+    val icon: String,
 )

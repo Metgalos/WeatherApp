@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "responses_history")
 data class WeatherEntity(
     @ColumnInfo(name = "location") val location: String?,
-    @ColumnInfo(name = "temperature") val temperature: Int?,
-    @ColumnInfo(name = "feels_like") val feelslike: Int?,
+    @ColumnInfo(name = "temperature") val temperature: Double?,
+    @ColumnInfo(name = "feels_like") val feelslike: Double?,
     @ColumnInfo(name = "icon_url") val icon: String?,
-    @ColumnInfo(name = "response_datetime") val responseDatetime: String?,
+    @ColumnInfo(name = "timestamp") val timestamp: Long?,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0
 )
