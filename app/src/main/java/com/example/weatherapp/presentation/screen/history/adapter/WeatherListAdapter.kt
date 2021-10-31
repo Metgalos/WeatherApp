@@ -16,14 +16,22 @@ class WeatherListAdapter : PagingDataAdapter<WeatherEntity, HistoryViewHolder>(d
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<WeatherEntity>() {
-            override fun areItemsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean = (old.id == aNew.id)
+            override fun areItemsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean {
+                return old.id == aNew.id
+            }
 
-            override fun areContentsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean = (old == aNew)
+            override fun areContentsTheSame(old: WeatherEntity, aNew: WeatherEntity): Boolean {
+                return old == aNew
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        return HistoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.weather_row, parent, false))
+        return HistoryViewHolder(
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.weather_row, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {

@@ -6,16 +6,19 @@ import com.example.weatherapp.data.response.MainWeatherResponse as WeatherRespon
 import com.example.weatherapp.data.database.dao.WeatherDao
 import com.example.weatherapp.data.mapper.WeatherMapper
 import com.example.weatherapp.data.network.api.WeatherApi
+import com.example.weatherapp.data.storage.LastRequestStorage
 import com.example.weatherapp.domain.model.Weather
 import com.example.weatherapp.domain.repository.WeatherRepository
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
 class WeatherRepositoryImpl @Inject constructor(
     private val weatherDao: WeatherDao,
     private val weatherApi: WeatherApi,
     private val mapper: WeatherMapper,
+    private val lastRequestStorage: LastRequestStorage,
 ) : WeatherRepository {
 
     suspend fun add(weatherEntity: WeatherEntity) {
@@ -44,7 +47,9 @@ class WeatherRepositoryImpl @Inject constructor(
 
     fun getAllPaged(): PagingSource<Int, WeatherEntity> = weatherDao.getAllPaged()
 
-    suspend fun getAll(page: Int, pageSize: Int): List<WeatherEntity> = weatherDao.getAll(page, pageSize)
+    suspend fun getAll(page: Int, pageSize: Int): List<WeatherEntity> {
+        return weatherDao.getAll(page, pageSize)
+    }
 
     override suspend fun getCurrent(city: String): Weather {
         val weather = weatherApi.getCurrentWeather(city)
@@ -54,5 +59,13 @@ class WeatherRepositoryImpl @Inject constructor(
     override suspend fun save(weather: Weather) {
         val entity = mapper.mapEntity(weather)
         weatherDao.add(entity)
+    }
+
+    override suspend fun getLastRequest(): String {
+        return lastRequestStorage.lastRequest.first()
+    }
+
+    override suspend fun saveLastRequest(city: String) {
+        return lastRequestStorage.saveLastRequest(city)
     }
 }

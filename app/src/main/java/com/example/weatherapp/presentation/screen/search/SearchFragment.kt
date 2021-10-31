@@ -24,7 +24,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
     }
 
     private fun setResponseObserver() {
-        apiViewModel.response.observe(viewLifecycleOwner, {
+        viewModel.response.observe(viewLifecycleOwner, {
             if (it.isSuccessful) {
                 GlideImageLoader.load(
                     LoadPhotoConfig(it.body()?.current?.icons?.first().toString()),
@@ -42,7 +42,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(
 
     private fun setCurrentWeatherButtonListeners() {
         binding.getCurrentWeatherButton.setOnClickListener {
-            apiViewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
+            viewModel.getCurrentWeather(binding.enterCityEdit.text.toString())
         }
     }
 }

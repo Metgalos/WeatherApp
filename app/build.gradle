@@ -1,12 +1,15 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
@@ -109,10 +112,34 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
 
+detekt {
+    config = files("$rootDir/detekt-config.yml")
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        txt.enabled = true
+    }
+}
+
+task installGitHook(type: Copy) {
+    def suffix = "unix"
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        suffix = "windows"
+    }
+    from new File(rootProject.rootDir, "scripts/pre-commit-$suffix")
+    into { new File(rootProject.rootDir, '.git/hooks') }
+    rename("pre-commit-$suffix", 'pre-commit')
+    fileMode 0775
+}
+
 def getLocalProperties() {
     Properties properties = new Properties()
-    if (rootProject.file("local.properties").exists()) {
-        properties.load(new FileInputStream(rootProject.file("local.properties")))
+    File propertiesFile = rootProject.file("local.properties")
+    if (propertiesFile.exists()) {
+        properties.load(new FileInputStream(propertiesFile))
     }
     return properties
 }
+
+tasks.getByPath(':app:preBuild').dependsOn installGitHook
