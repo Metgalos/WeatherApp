@@ -15,10 +15,18 @@ import timber.log.Timber
 import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
+
+private const val DATETIME_FORMAT = "yyyy/MM/dd HH:mm:ss"
+private const val DATETIME_UI_FORMAT = "dd MMMM yyyy HH:mm"
 
 fun String.toUiDateFormat(): String {
-    return changeDateFormat(this, "yyyy/MM/dd HH:mm:ss", "dd MMMM yyyy HH:mm")
+    return changeDateFormat(this, DATETIME_FORMAT, DATETIME_UI_FORMAT)
+}
+
+fun Long?.toUiDateFormat(): String {
+    return if (this == null) ""
+    else SimpleDateFormat(DATETIME_UI_FORMAT, Locale.getDefault()).format(Date(this))
 }
 
 private fun changeDateFormat(string: String, from: String, to: String): String {
@@ -59,4 +67,4 @@ fun Int?.emptyIfNull(): Int = this ?: 0
 fun Double?.emptyIfNull(): Double = this ?: 0.00
 fun String?.emptyIfNull(): String = this ?: ""
 
-fun getIconUrl(code: String): String = "http://openweathermap.org/img/wn/$code@2x.png"
+fun String?.getIconUrl(): String = "http://openweathermap.org/img/wn/$this@2x.png"

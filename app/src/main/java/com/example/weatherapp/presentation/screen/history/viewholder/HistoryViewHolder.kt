@@ -2,26 +2,34 @@ package com.example.weatherapp.presentation.screen.history.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weatherapp.R
 import com.example.weatherapp.data.entity.WeatherEntity
 import com.example.weatherapp.data.model.LoadPhotoConfig
-import com.example.weatherapp.domain.service.image_loader.GlideImageLoader
+import com.example.weatherapp.databinding.WeatherRowBinding
+import com.example.weatherapp.extensions.getIconUrl
+import com.example.weatherapp.extensions.load
 import com.example.weatherapp.extensions.toUiDateFormat
-import kotlinx.android.synthetic.main.weather_row.view.*
 
 
 class HistoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    fun bind(data: WeatherEntity, listener: HistoryViewHolderListener?) {
-        itemView.rowCityName.text = data.location
-        itemView.temperatureValue.text = data.temperature.toString()
-        itemView.temperatureFeelsValue.text = data.feelslike.toString()
-        itemView.datetimeText.text = data.responseDatetime?.toUiDateFormat()
 
-        GlideImageLoader.load(
-            LoadPhotoConfig(data.icon!!),
-            itemView.rowIconImageView
+    private val binding = WeatherRowBinding.bind(itemView)
+
+    fun bind(data: WeatherEntity, listener: HistoryViewHolderListener?) = with (binding) {
+        rowCityName.text = data.location
+        temperatureValue.text = data.temperature.toString()
+        temperatureFeelsValue.text = data.feelslike.toString()
+        datetimeText.text = data.timestamp?.toUiDateFormat()
+
+        rowIconImageView.load(
+            LoadPhotoConfig(
+                url = data.icon.getIconUrl(),
+                errorRes = R.drawable.ic_unknown_weather,
+                placeholderRes = R.drawable.ic_unknown_weather,
+            )
         )
 
-        itemView.deleteItemButton.setOnClickListener {
+        deleteItemButton.setOnClickListener {
             listener?.onDeleteItem(data)
         }
     }

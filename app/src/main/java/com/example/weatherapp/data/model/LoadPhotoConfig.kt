@@ -1,7 +1,13 @@
 package com.example.weatherapp.data.model
 
+import androidx.annotation.DrawableRes
+
 data class LoadPhotoConfig(
     val url: String,
-    val placeholderRes: Int? = null,
+
+    @DrawableRes
     val errorRes: Int? = null,
+
+    @DrawableRes
+    val placeholderRes: Int? = null,
 )

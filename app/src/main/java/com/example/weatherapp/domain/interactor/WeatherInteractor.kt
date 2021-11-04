@@ -11,12 +11,6 @@ class WeatherInteractor @Inject constructor(
     suspend fun getCurrentWeather(city: String): Weather {
         val weather = repository.getCurrent(city)
         repository.save(weather)
-        repository.saveLastRequest(city)
         return weather
-    }
-
-    suspend fun getLastWeather(): Weather {
-        val lastLocation = repository.getLastRequest()
-        return getCurrentWeather(lastLocation)
     }
 }

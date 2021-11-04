@@ -20,11 +20,11 @@ interface WeatherDao {
     @Delete
     suspend fun delete(weatherEntity: WeatherEntity)
 
-    @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC")
+    @Query("SELECT * FROM $TABLE_NAME ORDER BY timestamp DESC")
     fun getAllPaged(): PagingSource<Int, WeatherEntity>
 
     @Suppress("MaxLineLength")
-    @Query("SELECT * FROM $TABLE_NAME ORDER BY response_datetime DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
+    @Query("SELECT * FROM $TABLE_NAME ORDER BY timestamp DESC LIMIT :pageSize OFFSET (:page - 1) * :pageSize")
     suspend fun getAll(page: Int, pageSize: Int): List<WeatherEntity>
 
     companion object {

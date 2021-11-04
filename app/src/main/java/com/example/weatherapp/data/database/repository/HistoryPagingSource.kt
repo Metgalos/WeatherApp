@@ -3,9 +3,10 @@ package com.example.weatherapp.data.database.repository
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.weatherapp.data.entity.WeatherEntity
+import com.example.weatherapp.domain.repository.WeatherRepository
 
 class HistoryPagingSource(
-    private val repository: WeatherRepository
+    private val repository: WeatherRepository,
 ) : PagingSource<Int, WeatherEntity>() {
 
     override fun getRefreshKey(state: PagingState<Int, WeatherEntity>): Int? {
