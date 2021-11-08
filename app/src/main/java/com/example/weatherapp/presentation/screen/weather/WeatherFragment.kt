@@ -2,14 +2,12 @@ package com.example.weatherapp.presentation.screen.weather
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentWeatherBinding
@@ -34,6 +32,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>(
             locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener
             )
+            Toast.makeText(requireContext(), "Location get", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(
                 requireContext(),
@@ -45,30 +44,6 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkLocationPermissions()
-    }
-
-    private fun checkLocationPermissions() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Toast.makeText(requireContext(), "Request last weather", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
-                Toast.makeText(
-                    requireContext(),
-                    "Should show request permission",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            else -> {
-                requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-            }
-        }
+        requestPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 }
