@@ -2,6 +2,7 @@ package com.example.weatherapp.extensions
 
 import android.content.Context
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
@@ -44,6 +45,18 @@ fun ImageView.load(config: LoadPhotoConfig) {
         .load(config.url)
         .placeholder(config.placeholderRes ?: -1)
         .error(config.errorRes ?: -1)
+        .into(this)
+}
+
+fun ImageView.loadIcon(
+    icon: String,
+    placeholderResId: Int? = null,
+    errorResId: Int? = null,
+) {
+    Glide.with(context)
+        .load(icon.getIconUrl())
+        .placeholder(placeholderResId ?: -1)
+        .error(errorResId ?: -1)
         .into(this)
 }
 

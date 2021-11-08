@@ -1,9 +1,6 @@
 package com.example.weatherapp.presentation.screen.main
-
-import android.content.Context
+E
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -26,10 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        binding.mainBottomNavigation.setOnItemSelectedListener { item ->
+            binding.mainBottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.search -> navController.navigate(R.id.action_global_weatherFragment)
                 R.id.history -> navController.navigate(R.id.action_global_historyFragment)
@@ -37,6 +32,5 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener true
         }
-        return super.onCreateView(name, context, attrs)
     }
 }
