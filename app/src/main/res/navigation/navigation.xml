@@ -3,18 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/weatherFragment">
+    app:startDestination="@id/currentWeatherFragment">
 
     <fragment
         android:id="@+id/weatherFragment"
-        android:name="com.example.weatherapp.presentation_layer.screen.search.WeatherFragment"
+        android:name="com.example.weatherapp.presentation.screen.search.SearchFragment"
         android:label="fragment_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.weatherapp.presentation_layer.screen.history.HistoryFragment"
+        android:name="com.example.weatherapp.presentation.screen.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <action android:id="@+id/action_global_weatherFragment" app:destination="@id/weatherFragment" />
     <action android:id="@+id/action_global_historyFragment" app:destination="@id/historyFragment" />
+    <fragment
+        android:id="@+id/currentWeatherFragment"
+        android:name="com.example.weatherapp.presentation.screen.weather.WeatherFragment"
+        android:label="fragment_current_weather"
+        tools:layout="@layout/fragment_weather" />
 </navigation>
